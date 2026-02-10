@@ -1,15 +1,33 @@
 let colorSample = null; // the color sample element
 let answers = []; // array of answer elements
 let correctColorCode = null; // color code of actual color sample
-let score = localStorage.getItem("score") || 0; // number of correct answers
-let total = localStorage.getItem("total") || 0; // total number of questions
+let score = sessionStorage.getItem("score") || 0; // number of correct answers
+let total = sessionStorage.getItem("total") || 0; // total number of questions
 let numberOfQuestions = 10; // the number of questions in total
 let numberOfLevels = 3; // the number of questions in total
-let level = localStorage.getItem("level") || 1; // the current level
-let gameMode = localStorage.getItem("gameMode") || "guessCodeByColor"; // mode of game: guessCodeByColor (default), guessColorByCode
+let level = sessionStorage.getItem("level") || 1; // the current level
+let gameMode = sessionStorage.getItem("gameMode") || "guessCodeByColor"; // mode of game: guessCodeByColor (default), guessColorByCode
 
 // initailize page
 window.onload = function () {
+
+  // load the service worker
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").then(
+        function (registration) {
+          console.log(
+            "Service Worker registered with scope:",
+            registration.scope
+          );
+        },
+        function (error) {
+          console.log("Service Worker registration failed:", error);
+        }
+      );
+    });
+  } // if
+
   let currentPage = window.location.pathname;
 
   if (currentPage.includes("index.html")) {
@@ -18,10 +36,12 @@ window.onload = function () {
     document.getElementById("level").innerHTML = "You are in level " + level;
 
     // show the question
-    if (gameMode == "guessCodeByColor") 
-      document.getElementById("question").innerHTML = "What is the color code for this color?";
-    else if (gameMode == "guessColorByCode") 
-      document.getElementById("question").innerHTML = "What is the color for this color code?";
+    if (gameMode == "guessCodeByColor")
+      document.getElementById("question").innerHTML =
+        "What is the color code for this color?";
+    else if (gameMode == "guessColorByCode")
+      document.getElementById("question").innerHTML =
+        "What is the color for this color code?";
 
     // initialize color sample
     colorSample = document.getElementById("colorSample");
@@ -74,40 +94,42 @@ window.onload = function () {
 
     // show the level number
     document.getElementById("level").innerHTML =
-      "You are in level " + localStorage.getItem("level");
+      "You are in level " + sessionStorage.getItem("level");
 
-    // get score and total from localStorage
-    score = localStorage.getItem("score") || 0;
-    total = localStorage.getItem("total") || 0;
+    // get score and total from sessionStorage
+    score = sessionStorage.getItem("score") || 0;
+    total = sessionStorage.getItem("total") || 0;
     document.getElementById("score").innerHTML = score + " / " + total;
 
     // back button
     document.getElementById("back").addEventListener("click", function () {
-
       // update level; reset score and total
       level++;
       if (level > numberOfLevels) level = 1;
-      localStorage.setItem("level", level);
-      localStorage.setItem("score", 0);
-      localStorage.setItem("total", 0);
+      sessionStorage.setItem("level", level);
+      sessionStorage.setItem("score", 0);
+      sessionStorage.setItem("total", 0);
 
       goToPage("index");
     });
 
     // switch game mode button
-    document.getElementById("switchGameMode").addEventListener("click", function () {
+    document
+      .getElementById("switchGameMode")
+      .addEventListener("click", function () {
+        // switch game mode
+        if (gameMode == "guessCodeByColor")
+          sessionStorage.setItem("gameMode", "guessColorByCode");
+        else if (gameMode == "guessColorByCode")
+          sessionStorage.setItem("gameMode", "guessCodeByColor");
 
-      // switch game mode
-      if (gameMode == "guessCodeByColor") localStorage.setItem("gameMode", "guessColorByCode");
-      else if (gameMode == "guessColorByCode") localStorage.setItem("gameMode", "guessCodeByColor");
+        // reset lever, score, total
+        sessionStorage.setItem("level", 1);
+        sessionStorage.setItem("score", 0);
+        sessionStorage.setItem("total", 0);
 
-      // reset lever, score, total
-      localStorage.setItem("level", 1);
-      localStorage.setItem("score", 0);
-      localStorage.setItem("total", 0);
-
-      goToPage("index");
-    });
+        goToPage("index");
+      });
   } // else if
 };
 
@@ -118,19 +140,14 @@ function goToPage(pageName) {
 
 // load a new question
 function loadNewQuestion() {
-
   // set color of colorSample
   let colorCode = getRandomHexCode();
   if (gameMode == "guessCodeByColor") {
-
     colorSample.innerHTML = "";
     colorSample.style.backgroundColor = colorCode;
-
   } else if (gameMode == "guessColorByCode") {
-
     colorSample.innerHTML = colorCode;
     colorSample.style.backgroundColor = "#fff";
-
   }
 
   // store correct answer to this question globally
@@ -141,17 +158,13 @@ function loadNewQuestion() {
   let incorrectColorCode = null;
 
   for (let i = 0; i < answers.length; i++) {
-
     if (i == solution) {
-
       if (gameMode == "guessCodeByColor") {
         answers[i].innerHTML = colorCode;
       } else if (gameMode == "guessColorByCode") {
         answers[i].style.backgroundColor = colorCode;
       } // inner if
-
     } else {
-
       // avoid multiple correct answers
       do {
         incorrectColorCode = getRandomHexCode();
@@ -162,7 +175,6 @@ function loadNewQuestion() {
       } else if (gameMode == "guessColorByCode") {
         answers[i].style.backgroundColor = incorrectColorCode;
       } // inner if
-
     } // if
   } // for i
 } // loadNewQuestion
@@ -177,9 +189,11 @@ function markIt(elem) {
   if (gameMode == "guessColorByCode") {
     colorSample.style.backgroundColor = correctColorCode;
 
-    let rgbCode = window.getComputedStyle(elem).getPropertyValue('background-color');
+    let rgbCode = window
+      .getComputedStyle(elem)
+      .getPropertyValue("background-color");
     answerPicked = convertToHexCode(rgbCode);
-  } else if (gameMode = "guessCodeByColor") {
+  } else if ((gameMode = "guessCodeByColor")) {
     answerPicked = elem.innerHTML;
   }
 
@@ -201,9 +215,9 @@ function markIt(elem) {
       colorSample.innerHTML = "Incorrect...";
     }
 
-    // save the result to localStorage
-    localStorage.setItem("score", score);
-    localStorage.setItem("total", total);
+    // save the result to sessionStorage
+    sessionStorage.setItem("score", score);
+    sessionStorage.setItem("total", total);
   }, 100);
 
   window.setTimeout(function () {
@@ -211,7 +225,6 @@ function markIt(elem) {
     if (total == numberOfQuestions) {
       goToPage("result");
     } else {
-
       // end the full screen animation
       colorSample.classList.remove("full-screen");
 
@@ -251,12 +264,12 @@ function getRandomHexCode() {
 } // getRandomHexCode
 
 // convert rgb color code to hexadecimal color code
-function convertToHexCode(rgbColor){
+function convertToHexCode(rgbColor) {
   let parts = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  delete(parts[0]);
+  delete parts[0];
   for (let i = 1; i <= 3; i++) {
     parts[i] = parseInt(parts[i]).toString(16);
-    if (parts[i].length == 1) parts[i] = '0' + parts[i];
+    if (parts[i].length == 1) parts[i] = "0" + parts[i];
   }
-  return ('#' + parts.join(''));
+  return "#" + parts.join("");
 } // convertToHexCode
