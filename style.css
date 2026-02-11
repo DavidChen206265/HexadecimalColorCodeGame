@@ -24,16 +24,17 @@ h1, h2 {
 }
 
 .answer {
-  width: 7em;
+  width: 5em;
+  height: 0.5em;
   font-size: 2em;
   position: relative;
   margin-left: auto;
   margin-right: auto;
   border: thin solid black;
   text-align: center;
-  padding-top: 0.7em;
-  padding-bottom: 0.7em;
-  margin-top: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-top: 0.5em;
 
   text-shadow: 5px 5px 12px #fff;
   transition: all 0.5s ease-in-out;
@@ -62,4 +63,18 @@ h1, h2 {
 .list-two {
   flex: 0.1;
   padding: 10px;
+}
+
+#switchGameMode {
+  height: 2.5em !important; 
+}
+
+#back {
+  height: 2em !important;
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
 }
