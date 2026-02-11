@@ -1,3 +1,44 @@
+// load the service worker
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").then(
+      function (registration) {
+        console.log(
+          "Service Worker registered with scope:",
+          registration.scope,
+        );
+      },
+      function (error) {
+        console.log("Service Worker registration failed:", error);
+      },
+    );
+  });
+} // if
+
+// handle install prompt
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installButton = document.getElementById("installButton");
+  installButton.style.display = "block";
+
+  installButton.addEventListener("click", () => {
+    installButton.style.display = "none";
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted the install prompt");
+      } else {
+        console.log("User dismissed the install prompt");
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+
 let colorSample = null; // the color sample element
 let answers = []; // array of answer elements
 let correctColorCode = null; // color code of actual color sample
@@ -10,28 +51,9 @@ let gameMode = sessionStorage.getItem("gameMode") || "guessCodeByColor"; // mode
 
 // initailize page
 window.onload = function () {
-
-  // load the service worker
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-      navigator.serviceWorker.register("sw.js").then(
-        function (registration) {
-          console.log(
-            "Service Worker registered with scope:",
-            registration.scope
-          );
-        },
-        function (error) {
-          console.log("Service Worker registration failed:", error);
-        }
-      );
-    });
-  } // if
-
   let currentPage = window.location.pathname;
 
-  if (currentPage.includes("index.html")) {
-
+  if (currentPage.includes("index.html") || currentPage.endsWith("/")) {
     // show the level number
     document.getElementById("level").innerHTML = "You are in level " + level;
 

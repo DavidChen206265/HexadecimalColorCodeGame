@@ -1,26 +1,39 @@
-const version = 'v1';  // change this everytime you update the service worker
-                          // to force the browser to also update it.
+// Define cache names
+const CACHE_NAME = 'my-app-cache-v123';
+const DYNAMIC_CACHE_NAME = 'my-app-dynamic-cache-v1';
 
-self.addEventListener('install', function(event) {
+// Files to cache during install
+const STATIC_ASSETS = [
+  "index.html",
+  "result.html",
+  "style.css",
+  "script.js",
+  "images/icons/app-icon-192.png",
+  "images/icons/app-icon-512.png",
+];
+
+// Install event: Cache static assets
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open('my-cache').then(function(cache) {
-      return cache.addAll([
-        '/',
-        'index.html',
-        'result.html',
-        'styles.css',
-        'script.js',
-        'images/icons/app-icon-192.png',
-        'images/icons/app-icon-512.png'
-      ]);
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('Opened cache');
+      return cache.addAll(STATIC_ASSETS);
     })
   );
 });
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request).then(function(response) {
-      return response || fetch(event.request);
+// Activate event: Clean up old caches
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME && cache !== DYNAMIC_CACHE_NAME) {
+            console.log('Deleting old cache:', cache);
+            return caches.delete(cache);
+          }
+        })
+      );
     })
   );
 });
