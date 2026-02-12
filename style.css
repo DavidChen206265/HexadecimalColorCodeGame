@@ -1,4 +1,3 @@
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
@@ -30,18 +29,18 @@ h2 {
   margin: 20px auto;
   background-color: #fff;
   font-size: 3em;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  text-shadow: 
-    -1.5px -1.5px 0 #fff,  
-     1.5px -1.5px 0 #fff,
-    -1.5px  1.5px 0 #fff,
-     1.5px  1.5px 0 #fff,
-     0px    2px   8px #fff;
+  text-shadow:
+    -1.5px -1.5px 0 #fff,
+    1.5px -1.5px 0 #fff,
+    -1.5px 1.5px 0 #fff,
+    1.5px 1.5px 0 #fff,
+    0px 2px 8px #fff;
 }
 
 /* This is the actual "color" that will expand */
@@ -52,9 +51,11 @@ h2 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: inherit;  /*Matches the colorSample background */
+  background-color: inherit;
+  /*Matches the colorSample background */
   border-radius: inherit;
-  z-index: -1; /* Sits behind the text */
+  z-index: -1;
+  /* Sits behind the text */
   transition: transform 0.6s ease-in-out;
   transform-origin: center;
   pointer-events: none;
@@ -62,18 +63,21 @@ h2 {
 
 /* When the class is added, only the pseudo-element scales up */
 #colorSample.full-screen::before {
-  transform: scale(30); /* Large enough to cover any screen */
+  transform: scale(30);
+  /* Large enough to cover any screen */
 }
 
 #colorSample.full-screen {
-  z-index: 1000; /* Bring the whole container to the front */
-  border-radius: 0; 
+  z-index: 1000;
+  /* Bring the whole container to the front */
+  border-radius: 0;
 }
 
 /* Answer Buttons Layout */
 #answerContainer {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns for level 2+ */
+  grid-template-columns: repeat(2, 1fr);
+  /* 2 columns for level 2+ */
   gap: 15px;
   width: 100%;
   max-width: 500px;
@@ -81,8 +85,10 @@ h2 {
 }
 
 /* Remove default ul styles from script-generated lists */
-.list-one, .list-two {
-  display: contents; /* Allows grid to ignore these wrappers */
+.list-one,
+.list-two {
+  display: contents;
+  /* Allows grid to ignore these wrappers */
 }
 
 /* Answer Buttons Styling */
@@ -99,14 +105,14 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 60px;
+  min-height: 2.2rem;
   text-align: center;
-  text-shadow: 
-    -1.5px -1.5px 0 #fff,  
-     1.5px -1.5px 0 #fff,
-    -1.5px  1.5px 0 #fff,
-     1.5px  1.5px 0 #fff,
-     0px    2px   8px #fff;
+  text-shadow:
+    -1.5px -1.5px 0 #fff,
+    1.5px -1.5px 0 #fff,
+    -1.5px 1.5px 0 #fff,
+    1.5px 1.5px 0 #fff,
+    0px 2px 8px #fff;
 }
 
 .answer:active {
@@ -115,7 +121,8 @@ h2 {
 }
 
 /* Score and Utility Buttons */
-.answer#back, #switchGameMode {
+.answer#back,
+#switchGameMode {
   margin-top: 30px;
   width: 100%;
   max-width: 400px;
@@ -123,7 +130,8 @@ h2 {
   color: #111;
 }
 
-#switchGameMode, #back {
+#switchGameMode,
+#back {
   background: #eac108;
   cursor: pointer;
 }
@@ -140,8 +148,27 @@ h2 {
 
 /* Mobile Adjustments */
 @media (max-width: 480px) {
-  h1 { font-size: 1.4rem; }
-  #colorSample { height: 140px; }
-  .answer { font-size: 0.9rem; padding: 15px 5px; }
-  #answerContainer { gap: 10px; }
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  #colorSample {
+    font-size: 2em;
+    height: 5em;
+    margin: 10px auto;
+  }
+
+  .answer {
+    font-size: 1.2rem;
+    padding: 15px 5px;
+  }
+
+  #answerContainer {
+    gap: 10px;
+  }
 }
