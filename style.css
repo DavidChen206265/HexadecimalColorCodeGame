@@ -43,7 +43,6 @@ h2 {
     0px 2px 8px #fff;
 }
 
-/* This is the actual "color" that will expand */
 #colorSample::before {
   content: "";
   position: absolute;
@@ -52,46 +51,36 @@ h2 {
   width: 100%;
   height: 100%;
   background-color: inherit;
-  /*Matches the colorSample background */
   border-radius: inherit;
   z-index: -1;
-  /* Sits behind the text */
   transition: transform 0.6s ease-in-out;
   transform-origin: center;
   pointer-events: none;
 }
 
-/* When the class is added, only the pseudo-element scales up */
 #colorSample.full-screen::before {
   transform: scale(30);
-  /* Large enough to cover any screen */
 }
 
 #colorSample.full-screen {
   z-index: 1000;
-  /* Bring the whole container to the front */
   border-radius: 0;
 }
 
-/* Answer Buttons Layout */
 #answerContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* 2 columns for level 2+ */
   gap: 15px;
   width: 100%;
   max-width: 500px;
   margin-top: 20px;
 }
 
-/* Remove default ul styles from script-generated lists */
 .list-one,
 .list-two {
   display: contents;
-  /* Allows grid to ignore these wrappers */
 }
 
-/* Answer Buttons Styling */
 .answer {
   background: #eee;
   border: none;
@@ -120,7 +109,6 @@ h2 {
   filter: brightness(0.9);
 }
 
-/* Score and Utility Buttons */
 .answer#back,
 #switchGameMode {
   margin-top: 30px;
@@ -146,7 +134,6 @@ h2 {
   font-weight: bold;
 }
 
-/* Mobile Adjustments */
 @media (max-width: 480px) {
   h1 {
     font-size: 1.4rem;

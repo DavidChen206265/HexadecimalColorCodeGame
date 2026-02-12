@@ -244,7 +244,7 @@ function markIt(elem) {
 
   window.setTimeout(function () {
     // go to result page if all questions are done
-    if (total == numberOfQuestions) {
+    if (total >= numberOfQuestions) {
       goToPage("result");
     } else {
       // end the full screen animation
