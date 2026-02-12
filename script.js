@@ -75,11 +75,11 @@ window.onload = function () {
     answerContent += '<ul class="list-one">';
     for (let i = 0; i < numberOfChoices / 2; i++) {
       answerContent +=
-        '<div class="answer" id="' +
+        '<li class="answer" id="' +
         String.fromCharCode(97 + i) +
         '">' +
         String.fromCharCode(65 + i) +
-        "</div>";
+        "</li>";
     }
     answerContent += "</ul>";
 
@@ -87,11 +87,11 @@ window.onload = function () {
     answerContent += '<ul class="list-two">';
     for (let i = numberOfChoices / 2; i < numberOfChoices; i++) {
       answerContent +=
-        '<div class="answer" id="' +
+        '<li class="answer" id="' +
         String.fromCharCode(97 + i) +
         '">' +
         String.fromCharCode(65 + i) +
-        "</div>";
+        "</li>";
     }
     answerContent += "</ul>";
 
